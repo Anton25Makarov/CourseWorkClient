@@ -1,7 +1,6 @@
-package by.bsuir;
+package by.bsuir.course;
 
-import by.bsuir.window.AuthorisationWindow;
-
+import by.bsuir.course.window.AuthorisationWindow;
 
 public class Main {
 

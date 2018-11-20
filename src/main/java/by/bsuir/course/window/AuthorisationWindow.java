@@ -1,6 +1,7 @@
-package by.bsuir.window;
+package by.bsuir.course.window;
 
-import by.bsuir.entities.User;
+import by.bsuir.course.entities.Referee;
+import by.bsuir.course.entities.User;
 
 import javax.swing.*;
 import java.io.EOFException;
@@ -19,7 +20,6 @@ public class AuthorisationWindow extends JFrame {
     private JPasswordField password;
     private JButton ok;
     private JPanel panel;
-    private MenuAdminWindow menuAdminWindow;
 
     private Socket socket;
     private ObjectOutputStream objectOutputStream;
@@ -74,14 +74,26 @@ public class AuthorisationWindow extends JFrame {
                 }
                 objectOutputStream.writeObject("authorisation");
 
-                User user = new User(login.getText(), String.copyValueOf(password.getPassword()));
+                Referee referee = new Referee();
+                referee.setLogin(login.getText());
+                referee.setPassword(String.copyValueOf(password.getPassword()));
 
-                objectOutputStream.writeObject(user);
+                objectOutputStream.writeObject(referee);
 
                 String answer = (String) objectInputStream.readObject();
-                if (answer.equals("true")) {
-                    JOptionPane.showMessageDialog(this,
-                            "Красава");
+                password.setText("");
+                if (!answer.equals("false")) {
+                  /*  JOptionPane.showMessageDialog(this,
+                            answer);*/
+                    if (answer.equals("Admin")) {
+                        MenuAdminWindow menuAdminWindow =
+                                new MenuAdminWindow(this, socket,
+                                        objectOutputStream, objectInputStream);
+                        menuAdminWindow.setVisible(true);
+                        menuAdminWindow.setLocationRelativeTo(null);
+                    } else {
+
+                    }
                 } else {
                     JOptionPane.showMessageDialog(this,
                             "Неверно указаны логин или пароль");

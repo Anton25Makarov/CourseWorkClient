@@ -1,4 +1,4 @@
-package by.bsuir.client;
+package by.bsuir.course.client;
 
 import java.io.*;
 import java.net.ConnectException;
