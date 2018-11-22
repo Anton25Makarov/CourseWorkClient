@@ -1,7 +1,6 @@
 package by.bsuir.course.window;
 
 import by.bsuir.course.entities.Referee;
-import by.bsuir.course.entities.User;
 
 import javax.swing.*;
 import java.io.EOFException;
@@ -11,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.Socket;
+import java.net.SocketException;
 
 public class AuthorisationWindow extends JFrame {
 
@@ -31,35 +31,7 @@ public class AuthorisationWindow extends JFrame {
         setSize(300, 300);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
-        loginLabel = new JLabel("Логин: ");
-        loginLabel.setLocation(50, 50);
-        loginLabel.setSize(75, 50);
-
-        login = new JTextField();
-        login.setLocation(110, 60);
-        login.setSize(100, 30);
-
-        passwordLabel = new JLabel("Пароль: ");
-        passwordLabel.setLocation(50, 100);
-        passwordLabel.setSize(75, 50);
-
-        password = new JPasswordField();
-        password.setLocation(110, 110);
-        password.setSize(100, 30);
-
-        ok = new JButton("Ok");
-        ok.setLocation(90, 160);
-        ok.setSize(100, 30);
-
-        panel = new JPanel();
-        panel.setLayout(null);
-        panel.add(loginLabel);
-        panel.add(login);
-        panel.add(password);
-        panel.add(passwordLabel);
-        panel.add(ok);
-
-        add(panel);
+        init();
 
         ok.addActionListener(event -> {
             try {
@@ -99,6 +71,9 @@ public class AuthorisationWindow extends JFrame {
                             "Неверно указаны логин или пароль");
                 }
 
+            } catch (SocketException e) {
+                JOptionPane.showMessageDialog(this,
+                        "Не удаётся подключиться к серверу");
             } catch (EOFException e) {
                 e.printStackTrace();
             } catch (ClassNotFoundException | IOException e) {
@@ -119,5 +94,37 @@ public class AuthorisationWindow extends JFrame {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    private void init() {
+        loginLabel = new JLabel("Логин: ");
+        loginLabel.setLocation(50, 50);
+        loginLabel.setSize(75, 50);
+
+        login = new JTextField();
+        login.setLocation(110, 60);
+        login.setSize(100, 30);
+
+        passwordLabel = new JLabel("Пароль: ");
+        passwordLabel.setLocation(50, 100);
+        passwordLabel.setSize(75, 50);
+
+        password = new JPasswordField();
+        password.setLocation(110, 110);
+        password.setSize(100, 30);
+
+        ok = new JButton("Ok");
+        ok.setLocation(90, 160);
+        ok.setSize(100, 30);
+
+        panel = new JPanel();
+        panel.setLayout(null);
+        panel.add(loginLabel);
+        panel.add(login);
+        panel.add(password);
+        panel.add(passwordLabel);
+        panel.add(ok);
+
+        add(panel);
     }
 }

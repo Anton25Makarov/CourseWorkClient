@@ -1,6 +1,7 @@
 package by.bsuir.course.window;
 
 import by.bsuir.course.entities.Referee;
+import by.bsuir.course.entities.Sportsman;
 
 import javax.swing.*;
 
@@ -15,7 +16,8 @@ public class MenuAdminWindow extends JFrame {
 
     private JLabel menuAdminLabel;
     private JButton addButton;
-    private JButton addSportsmanButton;
+    private JButton deleteButton;
+    private JButton changeButton;
     private JButton backButton;
     private JPanel panel;
 
@@ -23,12 +25,14 @@ public class MenuAdminWindow extends JFrame {
     private ObjectOutputStream objectOutputStream;
     private ObjectInputStream objectInputStream;
 
+    private List<Referee> referees;
+    private List<Sportsman> sportsmen;
 
     public MenuAdminWindow(JFrame parent, Socket socket,
                            ObjectOutputStream objectOutputStream,
                            ObjectInputStream objectInputStream) {
         super("Админ: меню");
-        setSize(300, 400);
+        setSize(300, 300);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.socket = socket;
@@ -37,31 +41,16 @@ public class MenuAdminWindow extends JFrame {
 
         parent.setVisible(false);
 
-        menuAdminLabel = new JLabel("Меню: ");
-        menuAdminLabel.setLocation(120, 10);
-        menuAdminLabel.setSize(75, 50);
+        init();
 
-        addButton = new JButton("Добавить");
-        addButton.setLocation(50, 70);
-        addButton.setSize(180, 30);
-
-        addSportsmanButton = new JButton("Удалить");
-        addSportsmanButton.setLocation(50, 120);
-        addSportsmanButton.setSize(180, 30);
-
-        backButton = new JButton("Назад");
-        backButton.setLocation(10, 300);
-        backButton.setSize(80, 30);
-
-        panel = new JPanel();
-        panel.setLayout(null);
-
-        panel.add(backButton);
-        panel.add(addSportsmanButton);
-        panel.add(addButton);
-        panel.add(menuAdminLabel);
-
-        add(panel);
+        addButton.addActionListener(event -> {
+            AdminAddWindow adminAddWindow =
+                    new AdminAddWindow(this, socket,
+                            objectOutputStream, objectInputStream,
+                            referees, sportsmen);
+            adminAddWindow.setVisible(true);
+            adminAddWindow.setLocationRelativeTo(null);
+        });
 
         backButton.addActionListener(event -> {
             this.dispose();
@@ -77,7 +66,9 @@ public class MenuAdminWindow extends JFrame {
 
             objectOutputStream.writeObject(null);
 
-            List<Referee> referees = (List<Referee>) objectInputStream.readObject();
+            referees = (List<Referee>) objectInputStream.readObject();
+
+            sportsmen = (List<Sportsman>) objectInputStream.readObject();
 
             System.out.println(referees);
         } catch (IOException e) {
@@ -85,5 +76,38 @@ public class MenuAdminWindow extends JFrame {
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         }
+    }
+
+    private void init() {
+        menuAdminLabel = new JLabel("Меню: ");
+        menuAdminLabel.setLocation(120, 10);
+        menuAdminLabel.setSize(75, 50);
+
+        addButton = new JButton("Добавить");
+        addButton.setLocation(50, 70);
+        addButton.setSize(180, 30);
+
+        deleteButton = new JButton("Удалить");
+        deleteButton.setLocation(50, 120);
+        deleteButton.setSize(180, 30);
+
+        changeButton = new JButton("Изменить");
+        changeButton.setLocation(50, 170);
+        changeButton.setSize(180, 30);
+
+        backButton = new JButton("Назад");
+        backButton.setLocation(10, 220);
+        backButton.setSize(80, 30);
+
+        panel = new JPanel();
+        panel.setLayout(null);
+
+        panel.add(changeButton);
+        panel.add(backButton);
+        panel.add(deleteButton);
+        panel.add(addButton);
+        panel.add(menuAdminLabel);
+
+        add(panel);
     }
 }
