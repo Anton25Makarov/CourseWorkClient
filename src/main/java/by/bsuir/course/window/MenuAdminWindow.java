@@ -71,6 +71,7 @@ public class MenuAdminWindow extends JFrame {
             sportsmen = (List<Sportsman>) objectInputStream.readObject();
 
             System.out.println(referees);
+            System.out.println(sportsmen);
         } catch (IOException e) {
             e.printStackTrace();
         } catch (ClassNotFoundException e) {

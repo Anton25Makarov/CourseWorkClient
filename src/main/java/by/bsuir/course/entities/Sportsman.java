@@ -12,5 +12,4 @@ public class Sportsman extends Human implements Serializable {
     public void setPerformance(Sport performance) {
         this.performance = performance;
     }
-
 }

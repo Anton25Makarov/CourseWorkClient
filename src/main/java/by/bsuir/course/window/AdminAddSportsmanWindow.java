@@ -1,8 +1,6 @@
 package by.bsuir.course.window;
 
-import by.bsuir.course.entities.Address;
-import by.bsuir.course.entities.Referee;
-import by.bsuir.course.entities.Sportsman;
+import by.bsuir.course.entities.*;
 
 import javax.swing.*;
 import java.io.ObjectInputStream;
@@ -89,9 +87,25 @@ public class AdminAddSportsmanWindow extends JFrame {
             address.setCountry(currentCountry);
             address.setCity(currentCity);
             sportsman.setAddress(address);
+            Sport sport;
+            switch (currentSport) {
+                case "Фигурное катание":
+                    sport = new FigureSkating(currentSport);
+                    break;
+                case "Дайвинг":
+                    sport = new Diving(currentSport);
+                    break;
+                case "Прыжки с трамплина":
+                    sport = new SkiJumping(currentSport);
+                    break;
+                default:
+                    throw new UnsupportedOperationException();
+            }
+            sportsman.setPerformance(sport);
 
             sportsmen.add(sportsman);
-            JOptionPane.showMessageDialog(this,"Добавление прошло успешно!");
+
+            JOptionPane.showMessageDialog(this, "Добавление прошло успешно!");
             name.setText("");
             surname.setText("");
             age.setValue(18);
@@ -104,7 +118,6 @@ public class AdminAddSportsmanWindow extends JFrame {
             this.dispose();
             parent.setVisible(true);
         });
-
     }
 
     private void init() {
