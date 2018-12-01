@@ -3,7 +3,9 @@ package by.bsuir.course.window;
 import by.bsuir.course.entities.Referee;
 import by.bsuir.course.entities.Sportsman;
 import by.bsuir.course.window.add.AdminAddWindow;
+import by.bsuir.course.window.edit.AdminEditWindow;
 import by.bsuir.course.window.remove.AdminRemoveWindow;
+import by.bsuir.course.window.show.AdminShowSportsmenWindow;
 
 import javax.swing.*;
 
@@ -20,8 +22,11 @@ public class MenuAdminWindow extends JFrame {
     private JButton addButton;
     private JButton deleteButton;
     private JButton changeButton;
+    private JButton showButton;
     private JButton backButton;
     private JPanel panel;
+
+    private JMenuItem saveSportsmenItem;
 
     private Socket socket;
     private ObjectOutputStream objectOutputStream;
@@ -34,7 +39,7 @@ public class MenuAdminWindow extends JFrame {
                            ObjectOutputStream objectOutputStream,
                            ObjectInputStream objectInputStream) {
         super("Админ: меню");
-        setSize(300, 300);
+        setSize(300, 380);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.socket = socket;
@@ -63,9 +68,55 @@ public class MenuAdminWindow extends JFrame {
             adminRemoveWindow.setLocationRelativeTo(null);
         });
 
+        changeButton.addActionListener(event -> {
+            AdminEditWindow adminEditWindow =
+                    new AdminEditWindow(this, socket,
+                            objectOutputStream, objectInputStream,
+                            referees, sportsmen);
+            adminEditWindow.setVisible(true);
+            adminEditWindow.setLocationRelativeTo(null);
+        });
+
+        showButton.addActionListener(event -> {
+            AdminShowSportsmenWindow adminShowSportsmenWindow =
+                    new AdminShowSportsmenWindow(this, socket,
+                            objectOutputStream, objectInputStream,
+                            referees, sportsmen);
+            adminShowSportsmenWindow.setVisible(true);
+            adminShowSportsmenWindow.setLocationRelativeTo(null);
+        });
+
+
         backButton.addActionListener(event -> {
             this.dispose();
             parent.setVisible(true);
+        });
+
+        saveSportsmenItem.addActionListener(event -> {
+            try {
+                objectOutputStream.writeObject("setAll");
+                objectOutputStream.writeObject(null);
+
+                objectOutputStream.writeObject(sportsmen);
+                objectOutputStream.writeObject(referees);
+
+                String result = (String) objectInputStream.readObject();
+                switch (result) {
+                    case "successful inserting all":
+                        JOptionPane.showMessageDialog(this, "Сохранение выполнено");
+                        break;
+                    case "false":
+                        JOptionPane.showMessageDialog(this, "Сохранение не выполнено");
+                        break;
+                    default:
+                        throw new UnsupportedOperationException();
+                }
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
         });
 
         loadAllFromServer();
@@ -91,6 +142,15 @@ public class MenuAdminWindow extends JFrame {
     }
 
     private void init() {
+        JMenuBar menuBar = new JMenuBar();
+        setJMenuBar(menuBar);
+
+        JMenu menu = new JMenu("Сохранить");
+        menuBar.add(menu);
+
+        saveSportsmenItem = new JMenuItem("Сохранить всё");
+        menu.add(saveSportsmenItem);
+
         menuAdminLabel = new JLabel("Меню: ");
         menuAdminLabel.setLocation(120, 10);
         menuAdminLabel.setSize(75, 50);
@@ -107,8 +167,12 @@ public class MenuAdminWindow extends JFrame {
         changeButton.setLocation(50, 170);
         changeButton.setSize(180, 30);
 
+        showButton = new JButton("Посмотреть");
+        showButton.setLocation(50, 220);
+        showButton.setSize(180, 30);
+
         backButton = new JButton("Назад");
-        backButton.setLocation(10, 220);
+        backButton.setLocation(10, 270);
         backButton.setSize(80, 30);
 
         panel = new JPanel();
@@ -119,6 +183,7 @@ public class MenuAdminWindow extends JFrame {
         panel.add(deleteButton);
         panel.add(addButton);
         panel.add(menuAdminLabel);
+        panel.add(showButton);
 
         add(panel);
     }

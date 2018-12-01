@@ -1,4 +1,4 @@
-package by.bsuir.course.window.add;
+package by.bsuir.course.window.edit;
 
 import by.bsuir.course.entities.*;
 
@@ -6,9 +6,10 @@ import javax.swing.*;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.sql.Ref;
 import java.util.List;
 
-public class AdminAddRefereeWindow extends JFrame {
+public class AdminEditRefereeWindow extends JFrame {
 
     private JLabel menuAdminLabel;
 
@@ -30,8 +31,13 @@ public class AdminAddRefereeWindow extends JFrame {
     private JTextField login;
     private JPasswordField password;
 
+    private JLabel refereeLabel;
+    private JList<String> refereeList;
+    private JScrollPane scrollPaneReferee;
+    private DefaultListModel<String> listModelReferee;
 
-    private JButton addRefereeButton;
+    private JButton editRefereeButton;
+    private JButton chooseRefereeButton;
     private JButton backButton;
     private JPanel panel;
 
@@ -42,12 +48,14 @@ public class AdminAddRefereeWindow extends JFrame {
     private List<Referee> referees;
     private List<Sportsman> sportsmen;
 
+    private Referee currentReferee;
 
-    public AdminAddRefereeWindow(JFrame parent, Socket socket,
-                                 ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
-                                 List<Referee> referees, List<Sportsman> sportsmen) {
-        super("Админ: Добавление рефери");
-        setSize(400, 550);
+
+    public AdminEditRefereeWindow(JFrame parent, Socket socket,
+                                  ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
+                                  List<Referee> referees, List<Sportsman> sportsmen) {
+        super("Админ: меню");
+        setSize(750, 550);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.socket = socket;
@@ -61,7 +69,30 @@ public class AdminAddRefereeWindow extends JFrame {
 
         init();
 
-        addRefereeButton.addActionListener(event -> {
+        chooseRefereeButton.addActionListener(e -> {
+            int selectedIndex = refereeList.getSelectedIndex();
+            if (selectedIndex == -1) {
+                JOptionPane.showMessageDialog(this, "Укажите рефери");
+                return;
+            }
+
+            currentReferee = referees.get(selectedIndex);
+
+            name.setText(currentReferee.getName());
+            surname.setText(currentReferee.getSurname());
+            age.setValue(currentReferee.getAge());
+            country.setText(currentReferee.getAddress().getCountry());
+            city.setText(currentReferee.getAddress().getCity());
+            sportsBox.setSelectedItem(currentReferee.getSport());
+            login.setText(currentReferee.getLogin());
+            password.setText(currentReferee.getPassword());
+        });
+
+        editRefereeButton.addActionListener(e -> {
+            if (currentReferee == null) {
+                JOptionPane.showMessageDialog(this, "Вы не выбрали рефери");
+                return;
+            }
             String currentName = name.getText();
             String currentSurname = surname.getText();
             int currentAge = (Integer) age.getValue();
@@ -71,7 +102,6 @@ public class AdminAddRefereeWindow extends JFrame {
             String currentLogin = login.getText();
             String currentPassword = String.valueOf(password.getPassword());
 
-
             if (currentName.isEmpty() || currentSurname.isEmpty()
                     || currentCountry.isEmpty() || currentCity.isEmpty()
                     || currentLogin.isEmpty() || currentPassword.isEmpty()) {
@@ -80,27 +110,32 @@ public class AdminAddRefereeWindow extends JFrame {
             }
 
             for (Referee referee : referees) {
-                if (referee.getLogin().equals(currentLogin)) {
+                if (currentReferee.equals(referee)) {
+                    continue;
+                }
+                if ((referee.getName().equals(currentName)
+                        && referee.getSurname().equals(currentSurname))
+                        || referee.getLogin().equals(currentLogin)) {
                     JOptionPane.showMessageDialog(this, "Такой рефери уже существует");
                     return;
                 }
             }
 
-            Referee referee = new Referee();
-            referee.setName(currentName);
-            referee.setSurname(currentSurname);
-            referee.setAge(currentAge);
             Address address = new Address();
             address.setCountry(currentCountry);
             address.setCity(currentCity);
-            referee.setAddress(address);
-            referee.setSport(currentSport);
-            referee.setLogin(currentLogin);
-            referee.setPassword(currentPassword);
+            currentReferee.setName(currentName);
+            currentReferee.setSurname(currentSurname);
+            currentReferee.setAge(currentAge);
+            currentReferee.setAddress(address);
+            currentReferee.setSport(currentSport);
+            currentReferee.setLogin(currentLogin);
+            currentReferee.setPassword(currentPassword);
 
-            referees.add(referee);
+            listModelReferee.clear();
+            readReferee();
 
-            JOptionPane.showMessageDialog(this, "Добавление прошло успешно!");
+            JOptionPane.showMessageDialog(this, "Изменение прошло успешно!");
             name.setText("");
             surname.setText("");
             age.setValue(18);
@@ -118,74 +153,90 @@ public class AdminAddRefereeWindow extends JFrame {
     }
 
     private void init() {
+        listModelReferee = new DefaultListModel<>();
+        refereeList = new JList<>(listModelReferee);
+        refereeList.setLayoutOrientation(JList.VERTICAL);
         //////////////////////////////////////////////////////////////////
-        menuAdminLabel = new JLabel("Добавление рефери: ");
-        menuAdminLabel.setLocation(100, 10);
-        menuAdminLabel.setSize(200, 50);
-
-        nameLabel = new JLabel("Имя: ");
-        nameLabel.setLocation(10, 70);
-        nameLabel.setSize(80, 50);
-
-        surnameLabel = new JLabel("Фамилия: ");
-        surnameLabel.setLocation(10, 120);
-        surnameLabel.setSize(80, 50);
-
-        ageLabel = new JLabel("Полных лет: ");
-        ageLabel.setLocation(10, 170);
-        ageLabel.setSize(80, 50);
-
-        countryLabel = new JLabel("Страна: ");
-        countryLabel.setLocation(10, 220);
-        countryLabel.setSize(80, 50);
-
-        cityLabel = new JLabel("Город: ");
-        cityLabel.setLocation(10, 270);
-        cityLabel.setSize(80, 50);
-
-        sportLabel = new JLabel("Спорт: ");
-        sportLabel.setLocation(10, 320);
-        sportLabel.setSize(80, 50);
-
-        loginLabel = new JLabel("Логин: ");
-        loginLabel.setLocation(10, 370);
-        loginLabel.setSize(80, 50);
-
-        passwordLabel = new JLabel("Пароль: ");
-        passwordLabel.setLocation(10, 420);
-        passwordLabel.setSize(80, 50);
-        ///////////////////////////////////////////////////labels
-
+        refereeLabel = new JLabel("Изменение рефери: ");
+        refereeLabel.setLocation(100, 10);
+        refereeLabel.setSize(200, 50);
 
         ///////////////////////////////////////////////////active buttons
         backButton = new JButton("Назад");
         backButton.setLocation(10, 480);
         backButton.setSize(80, 30);
 
-        addRefereeButton = new JButton("Добавить");
-        addRefereeButton.setLocation(270, 480);
-        addRefereeButton.setSize(110, 30);
+        chooseRefereeButton = new JButton("Выбрать");
+        chooseRefereeButton.setLocation(270, 480);
+        chooseRefereeButton.setSize(110, 30);
+
+        readReferee();
+
+        scrollPaneReferee = new JScrollPane(refereeList);
+        scrollPaneReferee.setLocation(50, 50);
+        scrollPaneReferee.setSize(300, 200);
+
+
+        menuAdminLabel = new JLabel("Изменение рефери: ");
+        menuAdminLabel.setLocation(500, 10);
+        menuAdminLabel.setSize(200, 50);
+
+        nameLabel = new JLabel("Имя: ");
+        nameLabel.setLocation(400, 70);
+        nameLabel.setSize(80, 50);
+
+        surnameLabel = new JLabel("Фамилия: ");
+        surnameLabel.setLocation(400, 120);
+        surnameLabel.setSize(80, 50);
+
+        ageLabel = new JLabel("Полных лет: ");
+        ageLabel.setLocation(400, 170);
+        ageLabel.setSize(80, 50);
+
+        countryLabel = new JLabel("Страна: ");
+        countryLabel.setLocation(400, 220);
+        countryLabel.setSize(80, 50);
+
+        cityLabel = new JLabel("Город: ");
+        cityLabel.setLocation(400, 270);
+        cityLabel.setSize(80, 50);
+
+        sportLabel = new JLabel("Спорт: ");
+        sportLabel.setLocation(400, 320);
+        sportLabel.setSize(80, 50);
+
+        loginLabel = new JLabel("Логин: ");
+        loginLabel.setLocation(400, 370);
+        loginLabel.setSize(80, 50);
+
+        passwordLabel = new JLabel("Пароль: ");
+        passwordLabel.setLocation(400, 420);
+        passwordLabel.setSize(80, 50);
+
+        editRefereeButton = new JButton("Изменить");
+        editRefereeButton.setLocation(600, 480);
+        editRefereeButton.setSize(110, 30);
 
         name = new JTextField();
-        name.setLocation(100, 80);
+        name.setLocation(490, 80);
         name.setSize(150, 30);
 
         surname = new JTextField();
-        surname.setLocation(100, 130);
+        surname.setLocation(490, 130);
         surname.setSize(150, 30);
 
         SpinnerModel ageModel =
                 new SpinnerNumberModel(18, 18, 80, 1);
         age = new JSpinner(ageModel);
-        age.setLocation(100, 180);
+        age.setLocation(490, 180);
         age.setSize(80, 30);
 
         country = new JTextField();
-        country.setLocation(100, 230);
+        country.setLocation(490, 230);
         country.setSize(150, 30);
 
         city = new JTextField();
-        city.setLocation(100, 280);
+        city.setLocation(490, 280);
         city.setSize(150, 30);
 
         String[] items = {
@@ -194,23 +245,23 @@ public class AdminAddRefereeWindow extends JFrame {
                 "Прыжки с трамплина"
         };
         sportsBox = new JComboBox<>(items);
-        sportsBox.setLocation(100, 330);
+        sportsBox.setLocation(490, 330);
         sportsBox.setSize(150, 30);
 
         login = new JTextField();
-        login.setLocation(100, 380);
+        login.setLocation(490, 380);
         login.setSize(150, 30);
 
         password = new JPasswordField();
-        password.setLocation(100, 430);
+        password.setLocation(490, 430);
         password.setSize(150, 30);
-
 
         panel = new JPanel();
         panel.setLayout(null);
 
         panel.add(backButton);
-        panel.add(addRefereeButton);
+        panel.add(chooseRefereeButton);
+        panel.add(scrollPaneReferee);
 
         panel.add(menuAdminLabel);
         panel.add(nameLabel);
@@ -222,16 +273,25 @@ public class AdminAddRefereeWindow extends JFrame {
         panel.add(loginLabel);
         panel.add(passwordLabel);
 
-
         panel.add(name);
         panel.add(surname);
         panel.add(age);
         panel.add(country);
         panel.add(city);
         panel.add(sportsBox);
+        panel.add(editRefereeButton);
         panel.add(login);
         panel.add(password);
 
+
         add(panel);
+    }
+
+    private void readReferee() {
+        for (Referee referee : referees) {
+            listModelReferee.addElement(referee.getName() + " " +
+                    referee.getSurname() + " - " +
+                    referee.getLogin());
+        }
     }
 }

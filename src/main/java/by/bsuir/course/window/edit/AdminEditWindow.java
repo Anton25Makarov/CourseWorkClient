@@ -1,7 +1,10 @@
-package by.bsuir.course.window.add;
+package by.bsuir.course.window.edit;
 
 import by.bsuir.course.entities.Referee;
 import by.bsuir.course.entities.Sportsman;
+import by.bsuir.course.window.remove.AdminRemovePerformanceWindow;
+import by.bsuir.course.window.remove.AdminRemoveRefereeWindow;
+import by.bsuir.course.window.remove.AdminRemoveSportsmanWindow;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -10,18 +13,15 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-public class AdminAddWindow extends JFrame {
+public class AdminEditWindow extends JFrame {
 
     private JLabel menuAdminLabel;
-    private JButton addSportsmanButton;
-    private JButton addRefereeButton;
-    private JButton addPerformanceButton;
+    private JButton editSportsmanButton;
+    private JButton editRefereeButton;
     private JButton backButton;
     private JPanel panel;
 
     private JMenuItem saveSportsmenItem;
-    private JMenuItem saveRefereeItem;
-    private JMenuItem saveAllItem;
 
     private Socket socket;
     private ObjectOutputStream objectOutputStream;
@@ -31,11 +31,11 @@ public class AdminAddWindow extends JFrame {
     private List<Sportsman> sportsmen;
 
 
-    public AdminAddWindow(JFrame parent, Socket socket,
-                          ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
-                          List<Referee> referees, List<Sportsman> sportsmen) {
+    public AdminEditWindow(JFrame parent, Socket socket,
+                           ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
+                           List<Referee> referees, List<Sportsman> sportsmen) {
         super("Админ: меню");
-        setSize(300, 350);
+        setSize(300, 300);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.socket = socket;
@@ -49,31 +49,22 @@ public class AdminAddWindow extends JFrame {
 
         init();
 
-        addRefereeButton.addActionListener(event -> {
-            AdminAddRefereeWindow adminAddRefereeWindow =
-                    new AdminAddRefereeWindow(this, socket,
+        editRefereeButton.addActionListener(event -> {
+            AdminEditRefereeWindow adminEditRefereeWindow =
+                    new AdminEditRefereeWindow(this, socket,
                             objectOutputStream, objectInputStream,
                             referees, sportsmen);
-            adminAddRefereeWindow.setVisible(true);
-            adminAddRefereeWindow.setLocationRelativeTo(null);
+            adminEditRefereeWindow.setVisible(true);
+            adminEditRefereeWindow.setLocationRelativeTo(null);
         });
 
-        addSportsmanButton.addActionListener(event -> {
-            AdminAddSportsmanWindow adminAddSportsmanWindow =
-                    new AdminAddSportsmanWindow(this, socket,
+        editSportsmanButton.addActionListener(event -> {
+            AdminEditSportsmanWindow adminEditSportsmanWindow =
+                    new AdminEditSportsmanWindow(this, socket,
                             objectOutputStream, objectInputStream,
                             referees, sportsmen);
-            adminAddSportsmanWindow.setVisible(true);
-            adminAddSportsmanWindow.setLocationRelativeTo(null);
-        });
-
-        addPerformanceButton.addActionListener(event -> {
-            AdminAddPerformanceWindow adminAddPerformanceWindow =
-                    new AdminAddPerformanceWindow(this, socket,
-                            objectOutputStream, objectInputStream,
-                            referees, sportsmen);
-            adminAddPerformanceWindow.setVisible(true);
-            adminAddPerformanceWindow.setLocationRelativeTo(null);
+            adminEditSportsmanWindow.setVisible(true);
+            adminEditSportsmanWindow.setLocationRelativeTo(null);
         });
 
         backButton.addActionListener(event -> {
@@ -101,9 +92,7 @@ public class AdminAddWindow extends JFrame {
                         throw new UnsupportedOperationException();
                 }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
@@ -119,33 +108,28 @@ public class AdminAddWindow extends JFrame {
         saveSportsmenItem = new JMenuItem("Сохранить всё");
         menu.add(saveSportsmenItem);
 
-        menuAdminLabel = new JLabel("Добавление: ");
+        menuAdminLabel = new JLabel("Редиктирование: ");
         menuAdminLabel.setLocation(100, 10);
-        menuAdminLabel.setSize(100, 50);
+        menuAdminLabel.setSize(150, 50);
 
-        addSportsmanButton = new JButton("Добавить спортсмена");
-        addSportsmanButton.setLocation(50, 70);
-        addSportsmanButton.setSize(180, 30);
+        editSportsmanButton = new JButton("Изменить спортсмена");
+        editSportsmanButton.setLocation(50, 70);
+        editSportsmanButton.setSize(180, 30);
 
-        addRefereeButton = new JButton("Добавить судью");
-        addRefereeButton.setLocation(50, 120);
-        addRefereeButton.setSize(180, 30);
-
-        addPerformanceButton = new JButton("Добавить выступление");
-        addPerformanceButton.setLocation(50, 170);
-        addPerformanceButton.setSize(180, 30);
+        editRefereeButton = new JButton("Изменить судью");
+        editRefereeButton.setLocation(50, 120);
+        editRefereeButton.setSize(180, 30);
 
         backButton = new JButton("Назад");
-        backButton.setLocation(10, 220);
+        backButton.setLocation(10, 180);
         backButton.setSize(80, 30);
 
         panel = new JPanel();
         panel.setLayout(null);
 
         panel.add(backButton);
-        panel.add(addPerformanceButton);
-        panel.add(addRefereeButton);
-        panel.add(addSportsmanButton);
+        panel.add(editRefereeButton);
+        panel.add(editSportsmanButton);
         panel.add(menuAdminLabel);
 
         add(panel);
