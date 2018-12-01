@@ -2,6 +2,8 @@ package by.bsuir.course.window;
 
 import by.bsuir.course.entities.Referee;
 import by.bsuir.course.entities.Sportsman;
+import by.bsuir.course.window.add.AdminAddWindow;
+import by.bsuir.course.window.remove.AdminRemoveWindow;
 
 import javax.swing.*;
 
@@ -50,6 +52,15 @@ public class MenuAdminWindow extends JFrame {
                             referees, sportsmen);
             adminAddWindow.setVisible(true);
             adminAddWindow.setLocationRelativeTo(null);
+        });
+
+        deleteButton.addActionListener(event -> {
+            AdminRemoveWindow adminRemoveWindow =
+                    new AdminRemoveWindow(this, socket,
+                            objectOutputStream, objectInputStream,
+                            referees, sportsmen);
+            adminRemoveWindow.setVisible(true);
+            adminRemoveWindow.setLocationRelativeTo(null);
         });
 
         backButton.addActionListener(event -> {

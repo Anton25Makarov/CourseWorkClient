@@ -1,4 +1,4 @@
-package by.bsuir.course.window;
+package by.bsuir.course.window.add;
 
 import by.bsuir.course.entities.*;
 
