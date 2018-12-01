@@ -50,7 +50,12 @@ public class AdminAddWindow extends JFrame {
         init();
 
         addRefereeButton.addActionListener(event -> {
-            System.out.println("Hello =)");
+            AdminAddRefereeWindow adminAddRefereeWindow =
+                    new AdminAddRefereeWindow(this, socket,
+                            objectOutputStream, objectInputStream,
+                            referees, sportsmen);
+            adminAddRefereeWindow.setVisible(true);
+            adminAddRefereeWindow.setLocationRelativeTo(null);
         });
 
         addSportsmanButton.addActionListener(event -> {
@@ -60,6 +65,15 @@ public class AdminAddWindow extends JFrame {
                             referees, sportsmen);
             adminAddSportsmanWindow.setVisible(true);
             adminAddSportsmanWindow.setLocationRelativeTo(null);
+        });
+
+        addPerformanceButton.addActionListener(event -> {
+            AdminAddPerformanceWindow adminAddPerformanceWindow =
+                    new AdminAddPerformanceWindow(this, socket,
+                            objectOutputStream, objectInputStream,
+                            referees, sportsmen);
+            adminAddPerformanceWindow.setVisible(true);
+            adminAddPerformanceWindow.setLocationRelativeTo(null);
         });
 
         backButton.addActionListener(event -> {
