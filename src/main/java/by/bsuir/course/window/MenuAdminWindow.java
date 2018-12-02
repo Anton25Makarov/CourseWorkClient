@@ -6,6 +6,7 @@ import by.bsuir.course.window.add.AdminAddWindow;
 import by.bsuir.course.window.edit.AdminEditWindow;
 import by.bsuir.course.window.remove.AdminRemoveWindow;
 import by.bsuir.course.window.show.AdminShowSportsmenWindow;
+import by.bsuir.course.window.show.AdminShowWindow;
 
 import javax.swing.*;
 
@@ -78,12 +79,12 @@ public class MenuAdminWindow extends JFrame {
         });
 
         showButton.addActionListener(event -> {
-            AdminShowSportsmenWindow adminShowSportsmenWindow =
-                    new AdminShowSportsmenWindow(this, socket,
+            AdminShowWindow adminShowWindow =
+                    new AdminShowWindow(this, socket,
                             objectOutputStream, objectInputStream,
                             referees, sportsmen);
-            adminShowSportsmenWindow.setVisible(true);
-            adminShowSportsmenWindow.setLocationRelativeTo(null);
+            adminShowWindow.setVisible(true);
+            adminShowWindow.setLocationRelativeTo(null);
         });
 
 

@@ -9,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-public class AdminShowSportsmenWindow extends JFrame {
+public class AdminShowRefereesWindow extends JFrame {
     private JPanel panel;
     private JButton backButton;
     private JTable table;
@@ -21,12 +21,12 @@ public class AdminShowSportsmenWindow extends JFrame {
     private List<Referee> referees;
     private List<Sportsman> sportsmen;
 
-    public AdminShowSportsmenWindow(JFrame parent, Socket socket,
-                                    ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
-                                    java.util.List<Referee> referees, List<Sportsman> sportsmen) {
+    public AdminShowRefereesWindow(JFrame parent, Socket socket,
+                                   ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
+                                   List<Referee> referees, List<Sportsman> sportsmen) {
 
         super("Админ: меню");
-        setSize(730, 460);
+        setSize(830, 460);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.socket = socket;
@@ -55,7 +55,7 @@ public class AdminShowSportsmenWindow extends JFrame {
         backButton.setLocation(10, 380);
         backButton.setSize(80, 30);
 
-        JLabel title = new JLabel("Спортсмены");
+        JLabel title = new JLabel("Рефери");
         title.setLocation(100, 10);
         title.setSize(120, 30);
 
@@ -63,7 +63,7 @@ public class AdminShowSportsmenWindow extends JFrame {
 
         JScrollPane scrollPane = new JScrollPane(table);
         scrollPane.setLocation(10, 50);
-        scrollPane.setSize(690, 300);
+        scrollPane.setSize(790, 300);
 
         panel.add(backButton);
         panel.add(scrollPane);
@@ -73,20 +73,23 @@ public class AdminShowSportsmenWindow extends JFrame {
     }
 
     private String[][] getData() {
-        String[][] strings = new String[sportsmen.size()][6];
+        String[][] strings = new String[referees.size()][8];
         for (int i = 0; i < strings.length; i++) {
-            strings[i][0] = sportsmen.get(i).getName();
-            strings[i][1] = sportsmen.get(i).getSurname();
-            strings[i][2] = String.valueOf(sportsmen.get(i).getAge());
-            strings[i][3] = sportsmen.get(i).getAddress().getCountry();
-            strings[i][4] = sportsmen.get(i).getAddress().getCity();
-            strings[i][5] = sportsmen.get(i).getPerformance().getName();
+            strings[i][0] = referees.get(i).getName();
+            strings[i][1] = referees.get(i).getSurname();
+            strings[i][2] = referees.get(i).getLogin();
+            strings[i][3] = referees.get(i).getPassword();
+            strings[i][4] = String.valueOf(referees.get(i).getAge());
+            strings[i][5] = referees.get(i).getAddress().getCountry();
+            strings[i][6] = referees.get(i).getAddress().getCity();
+            strings[i][7] = referees.get(i).getSport();
         }
 
         return strings;
     }
 
     private String[] getHeaders() {
-        return new String[]{"Имя", "Фамилия", "Возраст (лет)", "Страна", "Город", "Спорт"};
+        String[] strings = {"Имя", "Фамилия", "Логин", "Пароль", "Возраст (лет)", "Страна", "Город", "Спорт"};
+        return strings;
     }
 }
