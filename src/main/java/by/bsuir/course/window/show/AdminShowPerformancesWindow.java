@@ -127,7 +127,6 @@ public class AdminShowPerformancesWindow extends JFrame {
         for (int i = 0; i < strings.length; i++) {
             List<Mark> marks = new ArrayList<>(sportsmenFigureSkating.get(i).getPerformance().getMarks().values());
 
-            FigureSkatingMark firstMark = (FigureSkatingMark) marks.get(0);
             strings[i][0] = sportsmenFigureSkating.get(i).getName();
             strings[i][1] = sportsmenFigureSkating.get(i).getSurname();
             strings[i][2] = sportsmenFigureSkating.get(i).getPerformance().getName();
@@ -136,8 +135,11 @@ public class AdminShowPerformancesWindow extends JFrame {
                     strings[i][k] = " - ";
                     strings[i][++k] = " - ";
                 } else {
-                    strings[i][k] = String.valueOf(((FigureSkatingMark) marks.get(j)).getPresentationMark());
-                    strings[i][++k] = String.valueOf(((FigureSkatingMark) marks.get(j)).getTechnicalMark());
+//                    strings[i][k] = String.valueOf(((FigureSkatingMark) marks.get(j)).getPresentationMark());
+//                    strings[i][++k] = String.valueOf(((FigureSkatingMark) marks.get(j)).getTechnicalMark());
+                    strings[i][k] = String.format("%(.2f", ((FigureSkatingMark) marks.get(j)).getPresentationMark());
+                    strings[i][++k] = String.format("%(.2f", ((FigureSkatingMark) marks.get(j)).getTechnicalMark());
+
                 }
             }
 
@@ -175,7 +177,9 @@ public class AdminShowPerformancesWindow extends JFrame {
                 if (marks.get(j) == null) {
                     strings[i][k] = " - ";
                 } else {
-                    strings[i][k] = String.valueOf(((DivingMark) marks.get(j)).getMark());
+//                    strings[i][k] = String.valueOf(((DivingMark) marks.get(j)).getMark());
+                    strings[i][k] = String.format("%(.2f", ((DivingMark) marks.get(j)).getMark());
+
                 }
             }
         }
@@ -212,7 +216,8 @@ public class AdminShowPerformancesWindow extends JFrame {
                 if (marks.get(j) == null) {
                     strings[i][k] = " - ";
                 } else {
-                    strings[i][k] = String.valueOf(((SkiJumpingMark) marks.get(j)).getMark());
+//                    strings[i][k] = String.valueOf(((SkiJumpingMark) marks.get(j)).getMark());
+                    strings[i][k] = String.format("%(.2f", ((SkiJumpingMark) marks.get(j)).getMark());
                 }
             }
         }

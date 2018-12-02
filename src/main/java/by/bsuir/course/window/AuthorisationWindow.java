@@ -55,16 +55,19 @@ public class AuthorisationWindow extends JFrame {
                 String answer = (String) objectInputStream.readObject();
                 password.setText("");
                 if (!answer.equals("false")) {
-                  /*  JOptionPane.showMessageDialog(this,
-                            answer);*/
+                    JOptionPane.showMessageDialog(this, answer);
                     if (answer.equals("Admin")) {
                         MenuAdminWindow menuAdminWindow =
                                 new MenuAdminWindow(this, socket,
                                         objectOutputStream, objectInputStream);
                         menuAdminWindow.setVisible(true);
                         menuAdminWindow.setLocationRelativeTo(null);
-                    } else {
-
+                    } else { // referee
+                        MenuUserWindow menuUserWindow =
+                                new MenuUserWindow(this, socket,
+                                        objectOutputStream, objectInputStream, answer);
+                        menuUserWindow.setVisible(true);
+                        menuUserWindow.setLocationRelativeTo(null);
                     }
                 } else {
                     JOptionPane.showMessageDialog(this,
@@ -74,8 +77,7 @@ public class AuthorisationWindow extends JFrame {
             } catch (SocketException e) {
                 JOptionPane.showMessageDialog(this,
                         "Не удаётся подключиться к серверу");
-            } catch (EOFException e) {
-                e.printStackTrace();
+                socket = null;
             } catch (ClassNotFoundException | IOException e) {
                 e.printStackTrace();
             }
