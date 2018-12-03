@@ -1,4 +1,4 @@
-package by.bsuir.course.window;
+package by.bsuir.course.window.evaluate;
 
 import by.bsuir.course.entities.*;
 
@@ -8,7 +8,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-public class UserEvaluateFigureSkatingWindow extends JFrame {
+public class UserEvaluateWindow extends JFrame {
 
     private JLabel sportsmenLabel;
 
@@ -30,7 +30,8 @@ public class UserEvaluateFigureSkatingWindow extends JFrame {
     private JSpinner artistryMark;
 
     private JLabel markLabel;
-    private JSpinner markSkiJumpingAndDiving;
+    private JSpinner markSkiJumping;
+    private JSpinner markDiving;
 
     private JButton backButton;
     private JPanel panel;
@@ -44,10 +45,10 @@ public class UserEvaluateFigureSkatingWindow extends JFrame {
     private Referee entryReferee;
 
 
-    public UserEvaluateFigureSkatingWindow(JFrame parent, Socket socket,
-                                           ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
-                                           List<Referee> referees, List<Sportsman> sportsmen,
-                                           Referee entryReferee) {
+    public UserEvaluateWindow(JFrame parent, Socket socket,
+                              ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
+                              List<Referee> referees, List<Sportsman> sportsmen,
+                              Referee entryReferee) {
         super("Рефери: меню");
         setSize(700, 450);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -89,11 +90,11 @@ public class UserEvaluateFigureSkatingWindow extends JFrame {
                     currentSportsman.getPerformance().addResult(entryReferee, mark);
                     break;
                 case "Прыжки с трамплина":
-                    mark = new SkiJumpingMark((Double) markSkiJumpingAndDiving.getValue());
+                    mark = new SkiJumpingMark((Double) markSkiJumping.getValue());
                     currentSportsman.getPerformance().addResult(entryReferee, mark);
                     break;
                 case "Дайвинг":
-                    mark = new DivingMark((Double) markSkiJumpingAndDiving.getValue());
+                    mark = new DivingMark((Double) markDiving.getValue());
                     currentSportsman.getPerformance().addResult(entryReferee, mark);
                     break;
                 default:
@@ -104,7 +105,8 @@ public class UserEvaluateFigureSkatingWindow extends JFrame {
 
             technicalMark.setValue(0);
             artistryMark.setValue(0);
-            markSkiJumpingAndDiving.setValue(0);
+            markSkiJumping.setValue(0);
+            markDiving.setValue(0);
             JOptionPane.showMessageDialog(this, "Вы успешно оценили спортсмена");
             listModelSportsmen.clear();
             readSportsmen();
@@ -147,22 +149,23 @@ public class UserEvaluateFigureSkatingWindow extends JFrame {
         markLabel.setLocation(400, 110);
         markLabel.setSize(110, 30);
 
-        if (entryReferee.getSport().equals("Дайвинг")) {
-            markSkiJumpingAndDiving = new JSpinner(new SpinnerNumberModel(0, 0, 10, 0.1));
-        } else if (entryReferee.getSport().equals("Прыжки с трамплина")) {
-            markSkiJumpingAndDiving = new JSpinner(new SpinnerNumberModel(0, 0, 20, 0.1));
-        }
-        markSkiJumpingAndDiving.setLocation(520, 110);
-        markSkiJumpingAndDiving.setSize(80, 30);
+        markDiving = new JSpinner(new SpinnerNumberModel(10, 0, 10, 0.1));
+        markDiving.setLocation(520, 110);
+        markDiving.setSize(80, 30);
+
+        markSkiJumping = new JSpinner(new SpinnerNumberModel(20, 0, 20, 0.1));
+        markSkiJumping.setLocation(520, 110);
+        markSkiJumping.setSize(80, 30);
+
 
 //////////////////////////
 
 
-        technicalMark = new JSpinner(new SpinnerNumberModel(0, 0, 6, 0.1));
+        technicalMark = new JSpinner(new SpinnerNumberModel(6, 0, 6, 0.1));
         technicalMark.setLocation(520, 110);
         technicalMark.setSize(80, 30);
 
-        artistryMark = new JSpinner(new SpinnerNumberModel(0, 0, 6, 0.1));
+        artistryMark = new JSpinner(new SpinnerNumberModel(6, 0, 6, 0.1));
         artistryMark.setLocation(520, 160);
         artistryMark.setSize(80, 30);
 
@@ -196,9 +199,15 @@ public class UserEvaluateFigureSkatingWindow extends JFrame {
             panel.add(technicalMarkLabel);
         }
         if (entryReferee.getSport().equals("Дайвинг") || entryReferee.getSport().equals("Прыжки с трамплина")) {
-            panel.add(markSkiJumpingAndDiving);
             panel.add(markLabel);
         }
+        if (entryReferee.getSport().equals("Дайвинг")) {
+            panel.add(markDiving);
+        }
+        if (entryReferee.getSport().equals("Прыжки с трамплина")) {
+            panel.add(markSkiJumping);
+        }
+        panel.add(markSkiJumping);
 
         add(panel);
     }

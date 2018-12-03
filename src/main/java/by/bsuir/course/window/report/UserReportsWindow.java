@@ -1,9 +1,8 @@
-package by.bsuir.course.window;
+package by.bsuir.course.window.report;
 
 import by.bsuir.course.entities.Referee;
 import by.bsuir.course.entities.Sportsman;
-import by.bsuir.course.window.add.AdminAddWindow;
-import by.bsuir.course.window.remove.AdminRemoveWindow;
+import by.bsuir.course.window.results.UserShowPerformancesResultsWindow;
 import by.bsuir.course.window.show.AdminShowWindow;
 
 import javax.swing.*;
@@ -13,12 +12,12 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.util.List;
 
-public class MenuUserWindow extends JFrame {
+public class UserReportsWindow extends JFrame {
 
     private JLabel menuAdminLabel;
-    private JButton addButton;
-    private JButton deleteButton;
-    private JButton estimateButton;
+    private JButton performancesShouldEvaluateButton;
+    private JButton performancesAlreadyEvaluateButton;
+    private JButton showResultsButton;
     private JButton showButton;
     private JButton backButton;
     private JPanel panel;
@@ -35,10 +34,11 @@ public class MenuUserWindow extends JFrame {
     private Referee entryReferee;
 
 
-    public MenuUserWindow(JFrame parent, Socket socket,
-                          ObjectOutputStream objectOutputStream,
-                          ObjectInputStream objectInputStream,
-                          String login) {
+    public UserReportsWindow(JFrame parent, Socket socket,
+                             ObjectOutputStream objectOutputStream,
+                             ObjectInputStream objectInputStream,
+                             List<Referee> referees, List<Sportsman> sportsmen,
+                             Referee entryReferee) {
         super("Рефери: меню");
         setSize(300, 380);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
@@ -46,37 +46,37 @@ public class MenuUserWindow extends JFrame {
         this.socket = socket;
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
-        this.currentRefereeLogin = login;
+        this.entryReferee = entryReferee;
 
         parent.setVisible(false);
 
         init();
 
-        addButton.addActionListener(event -> {
-            AdminAddWindow adminAddWindow =
-                    new AdminAddWindow(this, socket,
-                            objectOutputStream, objectInputStream,
-                            referees, sportsmen);
-            adminAddWindow.setVisible(true);
-            adminAddWindow.setLocationRelativeTo(null);
-        });
-
-        deleteButton.addActionListener(event -> {
-            AdminRemoveWindow adminRemoveWindow =
-                    new AdminRemoveWindow(this, socket,
-                            objectOutputStream, objectInputStream,
-                            referees, sportsmen);
-            adminRemoveWindow.setVisible(true);
-            adminRemoveWindow.setLocationRelativeTo(null);
-        });
-
-        estimateButton.addActionListener(event -> {
-            UserEvaluateFigureSkatingWindow userEvaluateFigureSkatingWindow =
-                    new UserEvaluateFigureSkatingWindow(this, socket,
+        performancesShouldEvaluateButton.addActionListener(event -> {
+            UserReportsShouldEvaluatePerformancesWindow userReportsShouldEvaluatePerformancesWindow =
+                    new UserReportsShouldEvaluatePerformancesWindow(this, socket,
                             objectOutputStream, objectInputStream,
                             referees, sportsmen, entryReferee);
-            userEvaluateFigureSkatingWindow.setVisible(true);
-            userEvaluateFigureSkatingWindow.setLocationRelativeTo(null);
+            userReportsShouldEvaluatePerformancesWindow.setVisible(true);
+            userReportsShouldEvaluatePerformancesWindow.setLocationRelativeTo(null);
+        });
+
+        performancesAlreadyEvaluateButton.addActionListener(event -> {
+            UserReportsAlreadyEvaluatePerformancesWindow userReportsAlreadyEvaluatePerformancesWindow =
+                    new UserReportsAlreadyEvaluatePerformancesWindow(this, socket,
+                            objectOutputStream, objectInputStream,
+                            referees, sportsmen, entryReferee);
+            userReportsAlreadyEvaluatePerformancesWindow.setVisible(true);
+            userReportsAlreadyEvaluatePerformancesWindow.setLocationRelativeTo(null);
+        });
+
+        showResultsButton.addActionListener(event -> {
+            UserShowPerformancesResultsWindow userShowPerformancesResultsWindow =
+                    new UserShowPerformancesResultsWindow(this, socket,
+                            objectOutputStream, objectInputStream,
+                            referees, sportsmen, entryReferee);
+            userShowPerformancesResultsWindow.setVisible(true);
+            userShowPerformancesResultsWindow.setLocationRelativeTo(null);
         });
 
         showButton.addActionListener(event -> {
@@ -114,43 +114,14 @@ public class MenuUserWindow extends JFrame {
                         throw new UnsupportedOperationException();
                 }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });
 
-        loadAllFromServer();
     }
 
-    private void loadAllFromServer() {
-        try {
-            objectOutputStream.writeObject("getAll");
 
-            objectOutputStream.writeObject(null);
-
-            referees = (List<Referee>) objectInputStream.readObject();
-
-            sportsmen = (List<Sportsman>) objectInputStream.readObject();
-
-            setCurrentReferee();
-
-//            System.out.println(referees);
-//            System.out.println(sportsmen);
-        } catch (IOException | ClassNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
-
-    private void setCurrentReferee() {
-        for (Referee referee : referees) {
-            if (currentRefereeLogin.equals(referee.getLogin())) {
-                entryReferee = referee;
-                break;
-            }
-        }
-    }
 
     private void init() {
         JMenuBar menuBar = new JMenuBar();
@@ -166,17 +137,17 @@ public class MenuUserWindow extends JFrame {
         menuAdminLabel.setLocation(120, 10);
         menuAdminLabel.setSize(75, 50);
 
-        addButton = new JButton("Отчёт");
-        addButton.setLocation(50, 70);
-        addButton.setSize(180, 30);
+        performancesShouldEvaluateButton = new JButton("Выступлениям, которые необходимо оценить");
+        performancesShouldEvaluateButton.setLocation(50, 70);
+        performancesShouldEvaluateButton.setSize(180, 30);
 
-        deleteButton = new JButton("Изменить");
-        deleteButton.setLocation(50, 120);
-        deleteButton.setSize(180, 30);
+        performancesAlreadyEvaluateButton = new JButton("Выступления, которые оценил");
+        performancesAlreadyEvaluateButton.setLocation(50, 120);
+        performancesAlreadyEvaluateButton.setSize(180, 30);
 
-        estimateButton = new JButton("Выставить оценки");
-        estimateButton.setLocation(50, 170);
-        estimateButton.setSize(180, 30);
+        showResultsButton = new JButton("Посмотреть результаты");
+        showResultsButton.setLocation(50, 170);
+        showResultsButton.setSize(180, 30);
 
         showButton = new JButton("Посмотреть");
         showButton.setLocation(50, 220);
@@ -189,10 +160,10 @@ public class MenuUserWindow extends JFrame {
         panel = new JPanel();
         panel.setLayout(null);
 
-        panel.add(estimateButton);
+        panel.add(showResultsButton);
         panel.add(backButton);
-        panel.add(deleteButton);
-        panel.add(addButton);
+        panel.add(performancesAlreadyEvaluateButton);
+        panel.add(performancesShouldEvaluateButton);
         panel.add(menuAdminLabel);
         panel.add(showButton);
 

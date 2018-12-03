@@ -1,9 +1,10 @@
 package by.bsuir.course.window;
 
 import by.bsuir.course.entities.Referee;
+import by.bsuir.course.window.menu.MenuAdminWindow;
+import by.bsuir.course.window.menu.MenuUserWindow;
 
 import javax.swing.*;
-import java.io.EOFException;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;

@@ -1,29 +1,28 @@
-package by.bsuir.course.window;
+package by.bsuir.course.window.menu;
 
 import by.bsuir.course.entities.Referee;
 import by.bsuir.course.entities.Sportsman;
-import by.bsuir.course.window.add.AdminAddWindow;
-import by.bsuir.course.window.edit.AdminEditWindow;
-import by.bsuir.course.window.remove.AdminRemoveWindow;
-import by.bsuir.course.window.show.AdminShowSportsmenWindow;
+import by.bsuir.course.window.diagram.UserDiagramsWindow;
+import by.bsuir.course.window.evaluate.UserEvaluateWindow;
+import by.bsuir.course.window.report.UserReportsWindow;
+import by.bsuir.course.window.results.UserShowPerformancesResultsWindow;
 import by.bsuir.course.window.show.AdminShowWindow;
 
 import javax.swing.*;
-
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-
 import java.net.Socket;
 import java.util.List;
 
-public class MenuAdminWindow extends JFrame {
+public class MenuUserWindow extends JFrame {
 
     private JLabel menuAdminLabel;
-    private JButton addButton;
-    private JButton deleteButton;
-    private JButton changeButton;
+    private JButton reportsButton;
+    private JButton showResultsButton;
+    private JButton estimateButton;
     private JButton showButton;
+    private JButton diagramButton;
     private JButton backButton;
     private JPanel panel;
 
@@ -35,47 +34,52 @@ public class MenuAdminWindow extends JFrame {
 
     private List<Referee> referees;
     private List<Sportsman> sportsmen;
+    private String currentRefereeLogin;
+    private Referee entryReferee;
 
-    public MenuAdminWindow(JFrame parent, Socket socket,
-                           ObjectOutputStream objectOutputStream,
-                           ObjectInputStream objectInputStream) {
-        super("Админ: меню");
-        setSize(300, 380);
+
+    public MenuUserWindow(JFrame parent, Socket socket,
+                          ObjectOutputStream objectOutputStream,
+                          ObjectInputStream objectInputStream,
+                          String login) {
+        super("Рефери: меню");
+        setSize(300, 430);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.socket = socket;
         this.objectInputStream = objectInputStream;
         this.objectOutputStream = objectOutputStream;
+        this.currentRefereeLogin = login;
 
         parent.setVisible(false);
 
         init();
 
-        addButton.addActionListener(event -> {
-            AdminAddWindow adminAddWindow =
-                    new AdminAddWindow(this, socket,
+        reportsButton.addActionListener(event -> {
+            UserReportsWindow adminAddWindow =
+                    new UserReportsWindow(this, socket,
                             objectOutputStream, objectInputStream,
-                            referees, sportsmen);
+                            referees, sportsmen, entryReferee);
             adminAddWindow.setVisible(true);
             adminAddWindow.setLocationRelativeTo(null);
         });
 
-        deleteButton.addActionListener(event -> {
-            AdminRemoveWindow adminRemoveWindow =
-                    new AdminRemoveWindow(this, socket,
+        showResultsButton.addActionListener(event -> {
+            UserShowPerformancesResultsWindow userShowPerformancesResultsWindow =
+                    new UserShowPerformancesResultsWindow(this, socket,
                             objectOutputStream, objectInputStream,
-                            referees, sportsmen);
-            adminRemoveWindow.setVisible(true);
-            adminRemoveWindow.setLocationRelativeTo(null);
+                            referees, sportsmen, entryReferee);
+            userShowPerformancesResultsWindow.setVisible(true);
+            userShowPerformancesResultsWindow.setLocationRelativeTo(null);
         });
 
-        changeButton.addActionListener(event -> {
-            AdminEditWindow adminEditWindow =
-                    new AdminEditWindow(this, socket,
+        estimateButton.addActionListener(event -> {
+            UserEvaluateWindow userEvaluateWindow =
+                    new UserEvaluateWindow(this, socket,
                             objectOutputStream, objectInputStream,
-                            referees, sportsmen);
-            adminEditWindow.setVisible(true);
-            adminEditWindow.setLocationRelativeTo(null);
+                            referees, sportsmen, entryReferee);
+            userEvaluateWindow.setVisible(true);
+            userEvaluateWindow.setLocationRelativeTo(null);
         });
 
         showButton.addActionListener(event -> {
@@ -85,6 +89,15 @@ public class MenuAdminWindow extends JFrame {
                             referees, sportsmen);
             adminShowWindow.setVisible(true);
             adminShowWindow.setLocationRelativeTo(null);
+        });
+
+        diagramButton.addActionListener(event -> {
+            UserDiagramsWindow userDiagramsWindow =
+                    new UserDiagramsWindow(this, socket,
+                            objectOutputStream, objectInputStream,
+                            referees, sportsmen, entryReferee);
+            userDiagramsWindow.setVisible(true);
+            userDiagramsWindow.setLocationRelativeTo(null);
         });
 
 
@@ -133,12 +146,21 @@ public class MenuAdminWindow extends JFrame {
 
             sportsmen = (List<Sportsman>) objectInputStream.readObject();
 
-            System.out.println(referees);
-            System.out.println(sportsmen);
-        } catch (IOException e) {
+            setCurrentReferee();
+
+//            System.out.println(referees);
+//            System.out.println(sportsmen);
+        } catch (IOException | ClassNotFoundException e) {
             e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
+        }
+    }
+
+    private void setCurrentReferee() {
+        for (Referee referee : referees) {
+            if (currentRefereeLogin.equals(referee.getLogin())) {
+                entryReferee = referee;
+                break;
+            }
         }
     }
 
@@ -156,35 +178,40 @@ public class MenuAdminWindow extends JFrame {
         menuAdminLabel.setLocation(120, 10);
         menuAdminLabel.setSize(75, 50);
 
-        addButton = new JButton("Добавить");
-        addButton.setLocation(50, 70);
-        addButton.setSize(180, 30);
+        reportsButton = new JButton("Отчёт");
+        reportsButton.setLocation(50, 70);
+        reportsButton.setSize(180, 30);
 
-        deleteButton = new JButton("Удалить");
-        deleteButton.setLocation(50, 120);
-        deleteButton.setSize(180, 30);
+        showResultsButton = new JButton("Результаты выступлений");
+        showResultsButton.setLocation(45, 120);
+        showResultsButton.setSize(190, 30);
 
-        changeButton = new JButton("Изменить");
-        changeButton.setLocation(50, 170);
-        changeButton.setSize(180, 30);
+        estimateButton = new JButton("Выставить оценки");
+        estimateButton.setLocation(50, 170);
+        estimateButton.setSize(180, 30);
 
         showButton = new JButton("Посмотреть");
         showButton.setLocation(50, 220);
         showButton.setSize(180, 30);
 
+        diagramButton = new JButton("Аналитическая информация");
+        diagramButton.setLocation(35, 270);
+        diagramButton.setSize(210, 30);
+
         backButton = new JButton("Назад");
-        backButton.setLocation(10, 270);
+        backButton.setLocation(10, 320);
         backButton.setSize(80, 30);
 
         panel = new JPanel();
         panel.setLayout(null);
 
-        panel.add(changeButton);
+        panel.add(estimateButton);
         panel.add(backButton);
-        panel.add(deleteButton);
-        panel.add(addButton);
+        panel.add(showResultsButton);
+        panel.add(reportsButton);
         panel.add(menuAdminLabel);
         panel.add(showButton);
+        panel.add(diagramButton);
 
         add(panel);
     }
