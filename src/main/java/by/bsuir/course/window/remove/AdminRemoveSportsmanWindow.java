@@ -30,7 +30,7 @@ public class AdminRemoveSportsmanWindow extends JFrame {
     public AdminRemoveSportsmanWindow(JFrame parent, Socket socket,
                                       ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
                                       List<Referee> referees, List<Sportsman> sportsmen) {
-        super("Админ: меню");
+        super("Админ: удаление спортсмена");
         setSize(400, 470);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

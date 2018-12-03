@@ -34,7 +34,7 @@ public class AdminAddWindow extends JFrame {
     public AdminAddWindow(JFrame parent, Socket socket,
                           ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
                           List<Referee> referees, List<Sportsman> sportsmen) {
-        super("Админ: меню");
+        super("Админ: добавление");
         setSize(300, 350);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -101,9 +101,7 @@ public class AdminAddWindow extends JFrame {
                         throw new UnsupportedOperationException();
                 }
 
-            } catch (IOException e) {
-                e.printStackTrace();
-            } catch (ClassNotFoundException e) {
+            } catch (IOException | ClassNotFoundException e) {
                 e.printStackTrace();
             }
         });

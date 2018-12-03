@@ -54,7 +54,7 @@ public class AdminEditRefereeWindow extends JFrame {
     public AdminEditRefereeWindow(JFrame parent, Socket socket,
                                   ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
                                   List<Referee> referees, List<Sportsman> sportsmen) {
-        super("Админ: меню");
+        super("Админ: изменение рефери");
         setSize(750, 550);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

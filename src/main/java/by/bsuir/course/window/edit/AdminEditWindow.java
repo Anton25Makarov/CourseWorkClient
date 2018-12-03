@@ -34,7 +34,7 @@ public class AdminEditWindow extends JFrame {
     public AdminEditWindow(JFrame parent, Socket socket,
                            ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
                            List<Referee> referees, List<Sportsman> sportsmen) {
-        super("Админ: меню");
+        super("Админ: редактрирование");
         setSize(300, 300);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

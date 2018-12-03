@@ -35,7 +35,7 @@ public class UserDiagramRefereeBySportWindow extends JFrame {
                                            ObjectInputStream objectInputStream,
                                            List<Referee> referees, List<Sportsman> sportsmen,
                                            Referee entryReferee) {
-        super("Рефери: меню");
+        super("Даиграмма");
         setSize(500, 550);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

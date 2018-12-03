@@ -17,8 +17,6 @@ public class UserReportsWindow extends JFrame {
     private JLabel menuAdminLabel;
     private JButton performancesShouldEvaluateButton;
     private JButton performancesAlreadyEvaluateButton;
-    private JButton showResultsButton;
-    private JButton showButton;
     private JButton backButton;
     private JPanel panel;
 
@@ -39,8 +37,8 @@ public class UserReportsWindow extends JFrame {
                              ObjectInputStream objectInputStream,
                              List<Referee> referees, List<Sportsman> sportsmen,
                              Referee entryReferee) {
-        super("Рефери: меню");
-        setSize(300, 380);
+        super("Отчёты");
+        setSize(370, 270);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
         this.socket = socket;
@@ -69,25 +67,6 @@ public class UserReportsWindow extends JFrame {
             userReportsAlreadyEvaluatePerformancesWindow.setVisible(true);
             userReportsAlreadyEvaluatePerformancesWindow.setLocationRelativeTo(null);
         });
-
-        showResultsButton.addActionListener(event -> {
-            UserShowPerformancesResultsWindow userShowPerformancesResultsWindow =
-                    new UserShowPerformancesResultsWindow(this, socket,
-                            objectOutputStream, objectInputStream,
-                            referees, sportsmen, entryReferee);
-            userShowPerformancesResultsWindow.setVisible(true);
-            userShowPerformancesResultsWindow.setLocationRelativeTo(null);
-        });
-
-        showButton.addActionListener(event -> {
-            AdminShowWindow adminShowWindow =
-                    new AdminShowWindow(this, socket,
-                            objectOutputStream, objectInputStream,
-                            referees, sportsmen);
-            adminShowWindow.setVisible(true);
-            adminShowWindow.setLocationRelativeTo(null);
-        });
-
 
         backButton.addActionListener(event -> {
             this.dispose();
@@ -133,39 +112,30 @@ public class UserReportsWindow extends JFrame {
         saveSportsmenItem = new JMenuItem("Сохранить всё");
         menu.add(saveSportsmenItem);
 
-        menuAdminLabel = new JLabel("Меню: ");
+        menuAdminLabel = new JLabel("Создание отчёта: ");
         menuAdminLabel.setLocation(120, 10);
-        menuAdminLabel.setSize(75, 50);
+        menuAdminLabel.setSize(150, 50);
 
-        performancesShouldEvaluateButton = new JButton("Выступлениям, которые необходимо оценить");
-        performancesShouldEvaluateButton.setLocation(50, 70);
-        performancesShouldEvaluateButton.setSize(180, 30);
+        performancesShouldEvaluateButton = new JButton("Выступления, которые необходимо оценить");
+        performancesShouldEvaluateButton.setLocation(10, 70);
+        performancesShouldEvaluateButton.setSize(330, 30);
 
         performancesAlreadyEvaluateButton = new JButton("Выступления, которые оценил");
-        performancesAlreadyEvaluateButton.setLocation(50, 120);
-        performancesAlreadyEvaluateButton.setSize(180, 30);
+        performancesAlreadyEvaluateButton.setLocation(10, 120);
+        performancesAlreadyEvaluateButton.setSize(330, 30);
 
-        showResultsButton = new JButton("Посмотреть результаты");
-        showResultsButton.setLocation(50, 170);
-        showResultsButton.setSize(180, 30);
-
-        showButton = new JButton("Посмотреть");
-        showButton.setLocation(50, 220);
-        showButton.setSize(180, 30);
 
         backButton = new JButton("Назад");
-        backButton.setLocation(10, 270);
+        backButton.setLocation(10, 170);
         backButton.setSize(80, 30);
 
         panel = new JPanel();
         panel.setLayout(null);
 
-        panel.add(showResultsButton);
         panel.add(backButton);
         panel.add(performancesAlreadyEvaluateButton);
         panel.add(performancesShouldEvaluateButton);
         panel.add(menuAdminLabel);
-        panel.add(showButton);
 
         add(panel);
     }

@@ -25,7 +25,7 @@ public class AdminShowSportsmenWindow extends JFrame {
                                     ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
                                     java.util.List<Referee> referees, List<Sportsman> sportsmen) {
 
-        super("Админ: меню");
+        super("Спортсмены");
         setSize(730, 460);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

@@ -40,7 +40,7 @@ public class UserShowPerformancesResultsWindow extends JFrame {
                                              List<Referee> referees, List<Sportsman> sportsmen,
                                              Referee entryReferee) {
 
-        super("Админ: меню");
+        super("Результаты выступлений");
         setSize(800, 460);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

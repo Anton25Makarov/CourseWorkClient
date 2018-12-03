@@ -36,7 +36,7 @@ public class UserDiagramsWindow extends JFrame {
                               ObjectInputStream objectInputStream,
                               List<Referee> referees, List<Sportsman> sportsmen,
                               Referee entryReferee) {
-        super("Рефери: меню");
+        super("Диаграммы");
         setSize(300, 380);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

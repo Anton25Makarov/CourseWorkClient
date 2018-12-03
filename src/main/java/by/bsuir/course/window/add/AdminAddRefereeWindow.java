@@ -46,7 +46,7 @@ public class AdminAddRefereeWindow extends JFrame {
     public AdminAddRefereeWindow(JFrame parent, Socket socket,
                                  ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
                                  List<Referee> referees, List<Sportsman> sportsmen) {
-        super("Админ: Добавление рефери");
+        super("Админ: добавление рефери");
         setSize(400, 550);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

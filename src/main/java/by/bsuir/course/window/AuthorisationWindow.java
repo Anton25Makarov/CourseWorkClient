@@ -56,7 +56,6 @@ public class AuthorisationWindow extends JFrame {
                 String answer = (String) objectInputStream.readObject();
                 password.setText("");
                 if (!answer.equals("false")) {
-                    JOptionPane.showMessageDialog(this, answer);
                     if (answer.equals("Admin")) {
                         MenuAdminWindow menuAdminWindow =
                                 new MenuAdminWindow(this, socket,

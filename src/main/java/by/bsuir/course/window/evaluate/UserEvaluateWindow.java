@@ -49,7 +49,7 @@ public class UserEvaluateWindow extends JFrame {
                               ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
                               List<Referee> referees, List<Sportsman> sportsmen,
                               Referee entryReferee) {
-        super("Рефери: меню");
+        super("Выставление оценок");
         setSize(700, 450);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

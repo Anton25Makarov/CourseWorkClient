@@ -32,7 +32,7 @@ public class AdminShowWindow extends JFrame {
     public AdminShowWindow(JFrame parent, Socket socket,
                            ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
                            List<Referee> referees, List<Sportsman> sportsmen) {
-        super("Админ: меню");
+        super("Просмотр");
         setSize(300, 350);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -120,16 +120,16 @@ public class AdminShowWindow extends JFrame {
         menuAdminLabel.setSize(100, 50);
 
         showSportsmanButton = new JButton("Посмотреть спортсменов");
-        showSportsmanButton.setLocation(50, 70);
-        showSportsmanButton.setSize(180, 30);
+        showSportsmanButton.setLocation(35, 70);
+        showSportsmanButton.setSize(210, 30);
 
         showRefereeButton = new JButton("Посмотреть судей");
-        showRefereeButton.setLocation(50, 120);
-        showRefereeButton.setSize(180, 30);
+        showRefereeButton.setLocation(35, 120);
+        showRefereeButton.setSize(210, 30);
 
         showPerformanceButton = new JButton("Посмотреть выступления");
-        showPerformanceButton.setLocation(50, 170);
-        showPerformanceButton.setSize(180, 30);
+        showPerformanceButton.setLocation(35, 170);
+        showPerformanceButton.setSize(210, 30);
 
         backButton = new JButton("Назад");
         backButton.setLocation(10, 220);

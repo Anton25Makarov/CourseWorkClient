@@ -49,7 +49,7 @@ public class AdminEditSportsmanWindow extends JFrame {
     public AdminEditSportsmanWindow(JFrame parent, Socket socket,
                                     ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
                                     List<Referee> referees, List<Sportsman> sportsmen) {
-        super("Админ: меню");
+        super("Админ: изменение спортсмена");
         setSize(750, 470);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 

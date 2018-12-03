@@ -42,7 +42,7 @@ public class AdminAddSportsmanWindow extends JFrame {
     public AdminAddSportsmanWindow(JFrame parent, Socket socket,
                                    ObjectOutputStream objectOutputStream, ObjectInputStream objectInputStream,
                                    List<Referee> referees, List<Sportsman> sportsmen) {
-        super("Админ: меню");
+        super("Админ: добавление спортсмена");
         setSize(400, 470);
         setDefaultCloseOperation(WindowConstants.EXIT_ON_CLOSE);
 
@@ -88,6 +88,9 @@ public class AdminAddSportsmanWindow extends JFrame {
             address.setCity(currentCity);
             sportsman.setAddress(address);
             Sport sport;
+            if (currentSport == null) {
+                currentSport = "";
+            }
             switch (currentSport) {
                 case "Фигурное катание":
                     sport = new FigureSkating(currentSport);
@@ -99,7 +102,7 @@ public class AdminAddSportsmanWindow extends JFrame {
                     sport = new SkiJumping(currentSport);
                     break;
                 default:
-                    throw new UnsupportedOperationException();
+                    throw new UnsupportedOperationException("Unknown sport: " + currentSport);
             }
             sportsman.setPerformance(sport);
 
