@@ -81,12 +81,17 @@ public class UserReportsAlreadyEvaluatePerformancesWindow extends JFrame {
             report = createReport();
 
             try {
-                if (!Files.exists(Paths.get("src/main/resources/referees reports/" +
+                /*if (!Files.exists(Paths.get("src/main/resources/referees reports/" +
                         entryReferee.getLogin()))) {
                     Files.createDirectory(Paths.get("src/main/resources/referees reports/" +
                             entryReferee.getLogin()));
+                }*/
+                if (!Files.exists(Paths.get("C:\\Users\\Acer\\Desktop\\referees" +
+                        entryReferee.getLogin()))) {
+                    Files.createDirectory(Paths.get("C:\\Users\\Acer\\Desktop\\referees" +
+                            entryReferee.getLogin()));
                 }
-                Files.write(Paths.get("src/main/resources/referees reports/" +
+                Files.write(Paths.get("C:\\Users\\Acer\\Desktop\\referees" +
                         entryReferee.getLogin() + "/" + fileName + ".txt"), report.getBytes());
             } catch (IOException e1) {
                 JOptionPane.showMessageDialog(this,
@@ -94,7 +99,7 @@ public class UserReportsAlreadyEvaluatePerformancesWindow extends JFrame {
                 return;
             }
 
-            File file = new File("src/main/resources/referees reports/" +
+            File file = new File("C:\\Users\\Acer\\Desktop\\referees" +
                     entryReferee.getLogin() + "/" + fileName + ".txt");
 
             try {
@@ -120,7 +125,7 @@ public class UserReportsAlreadyEvaluatePerformancesWindow extends JFrame {
     }
 
     private boolean isExist(String fileName) {
-        return Files.exists(Paths.get("src/main/resources/referees reports/" +
+        return Files.exists(Paths.get("C:\\Users\\Acer\\Desktop\\referees" +
                 entryReferee.getLogin() + "/" +
                 fileName + ".txt"));
     }

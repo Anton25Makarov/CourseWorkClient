@@ -1,5 +1,6 @@
 package by.bsuir.course.window.add;
 
+import by.bsuir.course.builder.RefereeBuilder;
 import by.bsuir.course.entities.*;
 
 import javax.swing.*;
@@ -86,6 +87,17 @@ public class AdminAddRefereeWindow extends JFrame {
                 }
             }
 
+            Referee referee = new RefereeBuilder()
+                    .buildName(currentName)
+                    .buildSurname(currentSurname)
+                    .buildAge(currentAge)
+                    .buildSport(currentSport)
+                    .buildCountry(currentCountry)
+                    .buildCity(currentCity)
+                    .buildLogin(currentLogin)
+                    .buildPassword(currentPassword)
+                    .build();
+/*
             Referee referee = new Referee();
             referee.setName(currentName);
             referee.setSurname(currentSurname);
@@ -96,7 +108,7 @@ public class AdminAddRefereeWindow extends JFrame {
             referee.setAddress(address);
             referee.setSport(currentSport);
             referee.setLogin(currentLogin);
-            referee.setPassword(currentPassword);
+            referee.setPassword(currentPassword);*/
 
             referees.add(referee);
 

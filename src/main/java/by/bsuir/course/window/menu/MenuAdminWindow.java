@@ -95,6 +95,9 @@ public class MenuAdminWindow extends JFrame {
 
         saveSportsmenItem.addActionListener(event -> {
             try {
+                objectOutputStream.flush();
+                objectOutputStream.reset();
+
                 objectOutputStream.writeObject("setAll");
                 objectOutputStream.writeObject(null);
 

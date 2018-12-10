@@ -55,4 +55,17 @@ public class Referee extends Human implements Serializable {
     public int hashCode() {
         return Objects.hash(login, password, sport);
     }
+
+    @Override
+    public String toString() {
+        return "Referee{" +
+                "login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                ", sport='" + sport + '\'' +
+                ", name='" + name + '\'' +
+                ", surname='" + surname + '\'' +
+                ", age=" + age +
+                ", address=" + address +
+                '}';
+    }
 }

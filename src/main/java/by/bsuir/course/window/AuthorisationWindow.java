@@ -87,7 +87,8 @@ public class AuthorisationWindow extends JFrame {
     private void createSocket() {
         try { // установка соединения с сервером
             if (socket == null || objectOutputStream == null || objectInputStream == null) {
-                socket = new Socket(InetAddress.getLocalHost(), 8071);
+//                socket = new Socket(InetAddress.getLocalHost(), 8071);
+                socket = new Socket(InetAddress.getByName("127.0.0.1"), 8071);
                 objectOutputStream = new ObjectOutputStream(socket.getOutputStream());
                 objectInputStream = new ObjectInputStream(socket.getInputStream());
             }
