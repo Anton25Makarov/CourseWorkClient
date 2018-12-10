@@ -35,9 +35,15 @@ public class Sportsman extends Human implements Serializable, MarkCalculator {
         marks.removeAll(Collections.singleton(null));
         double total = 0;
         for (Mark mark : marks) {
+            if (mark == null) {
+                continue;
+            }
             double technicalMark = ((FigureSkatingMark) mark).getTechnicalMark();
             double presentationMark = ((FigureSkatingMark) mark).getPresentationMark();
             total += (technicalMark + presentationMark) / 2;
+        }
+        if (marks.size() == 0) {
+            return 0;
         }
         return total / marks.size();
     }

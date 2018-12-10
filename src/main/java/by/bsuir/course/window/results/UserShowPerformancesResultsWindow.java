@@ -3,6 +3,7 @@ package by.bsuir.course.window.results;
 import by.bsuir.course.entities.*;
 
 import javax.swing.*;
+import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
@@ -92,7 +93,6 @@ public class UserShowPerformancesResultsWindow extends JFrame {
         scrollPaneSkiJumping.setSize(745, 335);
 
 
-
         tabbedPane = new JTabbedPane();
         panelFigureSkating = new JPanel();
         panelDiving = new JPanel();
@@ -167,8 +167,22 @@ public class UserShowPerformancesResultsWindow extends JFrame {
             strings[i][0] = sportsmenFigureSkating.get(i).getName();
             strings[i][1] = sportsmenFigureSkating.get(i).getSurname();
             strings[i][2] = sportsmenFigureSkating.get(i).getPerformance().getName();
-//            strings[i][3] = String.valueOf(sportsmenFigureSkating.get(i).calculateMark());
-            strings[i][3] = String.format("%(.2f", sportsmenFigureSkating.get(i).calculateMark());
+
+            String result = " - ";
+            try {
+                objectOutputStream.flush();
+                objectOutputStream.reset();
+                objectOutputStream.writeObject("calculate Result");
+                objectOutputStream.writeObject(sportsmenFigureSkating.get(i));
+                result = (String) objectInputStream.readObject();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            strings[i][3] = result;
+//            strings[i][3] = String.format("%(.2f", sportsmenFigureSkating.get(i).calculateMark());
         }
         return strings;
     }
@@ -186,8 +200,19 @@ public class UserShowPerformancesResultsWindow extends JFrame {
             strings[i][0] = sportsmenDiving.get(i).getName();
             strings[i][2] = sportsmenDiving.get(i).getPerformance().getName();
             strings[i][1] = sportsmenDiving.get(i).getSurname();
+
+            String result = " - ";
+            try {
+                objectOutputStream.writeObject("calculate Result");
+                objectOutputStream.writeObject(sportsmenDiving.get(i));
+                result = (String) objectInputStream.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            strings[i][3] = result;
 //            strings[i][3] = String.valueOf(sportsmenDiving.get(i).calculateMark());
-            strings[i][3] = String.format("%(.2f", sportsmenDiving.get(i).calculateMark());
+//            strings[i][3] = String.format("%(.2f", sportsmenDiving.get(i).calculateMark());
 
         }
 
@@ -205,7 +230,18 @@ public class UserShowPerformancesResultsWindow extends JFrame {
             strings[i][0] = sportsmenSkiJumping.get(i).getName();
             strings[i][2] = sportsmenSkiJumping.get(i).getPerformance().getName();
 //            strings[i][3] = String.valueOf(sportsmenSkiJumping.get(i).calculateMark());
-            strings[i][3] = String.format("%(.2f", sportsmenSkiJumping.get(i).calculateMark());
+
+            String result = " - ";
+            try {
+                objectOutputStream.writeObject("calculate Result");
+                objectOutputStream.writeObject(sportsmenSkiJumping.get(i));
+                result = (String) objectInputStream.readObject();
+            } catch (IOException | ClassNotFoundException e) {
+                e.printStackTrace();
+            }
+
+            strings[i][3] = result;
+//            strings[i][3] = String.format("%(.2f", sportsmenSkiJumping.get(i).calculateMark());
 
         }
         return strings;
