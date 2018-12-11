@@ -87,24 +87,24 @@ public class AdminAddSportsmanWindow extends JFrame {
             address.setCountry(currentCountry);
             address.setCity(currentCity);
             sportsman.setAddress(address);
-            Sport sport;
+            SoloSport soloSport;
             if (currentSport == null) {
                 currentSport = "";
             }
             switch (currentSport) {
                 case "Фигурное катание":
-                    sport = new FigureSkating(currentSport);
+                    soloSport = new FigureSkating(currentSport);
                     break;
                 case "Дайвинг":
-                    sport = new Diving(currentSport);
+                    soloSport = new Diving(currentSport);
                     break;
                 case "Прыжки с трамплина":
-                    sport = new SkiJumping(currentSport);
+                    soloSport = new SkiJumping(currentSport);
                     break;
                 default:
-                    throw new UnsupportedOperationException("Unknown sport: " + currentSport);
+                    throw new UnsupportedOperationException("Unknown soloSport: " + currentSport);
             }
-            sportsman.setPerformance(sport);
+            sportsman.setPerformance(soloSport);
 
             sportsmen.add(sportsman);
 

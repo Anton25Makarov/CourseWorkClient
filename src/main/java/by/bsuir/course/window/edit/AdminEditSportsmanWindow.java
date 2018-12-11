@@ -119,21 +119,21 @@ public class AdminEditSportsmanWindow extends JFrame {
             address.setCountry(currentCountry);
             address.setCity(currentCity);
             sportsman.setAddress(address);
-            Sport sport;
+            SoloSport soloSport;
             switch (currentSport) {
                 case "Фигурное катание":
-                    sport = new FigureSkating(currentSport);
+                    soloSport = new FigureSkating(currentSport);
                     break;
                 case "Дайвинг":
-                    sport = new Diving(currentSport);
+                    soloSport = new Diving(currentSport);
                     break;
                 case "Прыжки с трамплина":
-                    sport = new SkiJumping(currentSport);
+                    soloSport = new SkiJumping(currentSport);
                     break;
                 default:
                     throw new UnsupportedOperationException();
             }
-            sportsman.setPerformance(sport);
+            sportsman.setPerformance(soloSport);
 
             if (!sportsman.getPerformance().getName().equals(currentSportsman.getPerformance().getName())) {
                 int answer = JOptionPane.showConfirmDialog(this,
@@ -145,7 +145,7 @@ public class AdminEditSportsmanWindow extends JFrame {
                     currentSportsman.setSurname(currentSurname);
                     currentSportsman.setAge(currentAge);
                     currentSportsman.setAddress(address);
-                    currentSportsman.setPerformance(sport);
+                    currentSportsman.setPerformance(soloSport);
 
                     listModelSportsmen.clear();
                     readSportsmen();

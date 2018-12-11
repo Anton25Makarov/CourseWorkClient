@@ -3,7 +3,7 @@ package by.bsuir.course.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class Diving extends Sport implements Serializable {
+public class Diving extends SoloSport implements Serializable {
     private double maxMark = 10;
     private int countOfReferees = 3;
 

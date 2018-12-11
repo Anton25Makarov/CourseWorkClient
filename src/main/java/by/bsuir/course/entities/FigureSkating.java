@@ -3,7 +3,7 @@ package by.bsuir.course.entities;
 import java.io.Serializable;
 import java.util.Objects;
 
-public class FigureSkating extends Sport implements Serializable {
+public class FigureSkating extends SoloSport implements Serializable {
     private double maxMark = 6;
     private int countOfReferees = 2;
 
