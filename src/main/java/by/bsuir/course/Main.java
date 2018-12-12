@@ -8,6 +8,5 @@ public class Main {
         AuthorisationWindow authorisationWindow = new AuthorisationWindow();
         authorisationWindow.setVisible(true);
         authorisationWindow.setLocationRelativeTo(null);
-//        Connection connection = new Connection();
     }
 }

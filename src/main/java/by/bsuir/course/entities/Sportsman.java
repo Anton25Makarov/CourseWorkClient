@@ -4,6 +4,7 @@ import java.io.Serializable;
 import java.util.*;
 
 public class Sportsman extends Human implements Serializable {
+    private static final long serialVersionUID = 1353141269246738679L;
     private SoloSport performance;
 
     public SoloSport getPerformance() {

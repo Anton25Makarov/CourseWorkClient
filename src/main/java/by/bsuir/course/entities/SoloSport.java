@@ -6,6 +6,8 @@ import java.util.Map;
 import java.util.Objects;
 
 public abstract class SoloSport extends Sport implements Serializable {
+    private static final long serialVersionUID = 1353141269246738673L;
+
     protected Map<Referee, Mark> marks;
 
     public SoloSport(String name) {

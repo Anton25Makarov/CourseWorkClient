@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.util.Objects;
 
 public abstract class Sport implements Serializable {
+    private static final long serialVersionUID = 8414573596571830858L;
+
     protected String name;
 
     public Sport(String name) {
